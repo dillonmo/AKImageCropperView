@@ -146,13 +146,14 @@ open class AKImageCropperOverlayView: UIView {
     open var image: UIImage! {
         didSet {
             imageView.image = image
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+            //Wait for view to update.
+            DispatchQueue.main.async {
                 self.updateViewForAspectRatio()
             }
-            
+
         }
     }
+    
     
     //  MARK: - Initialization
 
@@ -161,6 +162,8 @@ open class AKImageCropperOverlayView: UIView {
      
      - Parameter configuraiton: Configuration structure for the Overlay View appearance and behavior.
      */
+    
+    
     
     init() {
         super.init(frame: .zero)
@@ -863,8 +866,7 @@ open class AKImageCropperOverlayView: UIView {
     }
     
     fileprivate func updateViewForAspectRatio() {
-        
-        if self.image == nil {
+        if self.image == nil || frame == CGRect.zero {
             return
         }
         

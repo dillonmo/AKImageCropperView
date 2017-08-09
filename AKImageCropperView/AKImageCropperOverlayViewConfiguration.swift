@@ -43,7 +43,7 @@ public struct AKImageCropperCropViewConfiguration {
 
     /// Edges insets for crop rectangle. Static values for programmatically rotation.
     
-    public var cropRectInsets = UIEdgeInsetsMake(20, 20, 20, 20)
+    public var cropRectInsets = UIEdgeInsetsMake(0, 0, 0, 0)
     
     /// The smallest value for the crop rectangle sizes. Initial value of this property is 60 pixels width and 60 pixels height.
     public var minCropRectSize: CGSize = CGSize(width: 60, height: 60)

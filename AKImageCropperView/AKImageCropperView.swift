@@ -143,6 +143,11 @@ open class AKImageCropperView: UIView, UIScrollViewDelegate, UIGestureRecognizer
             scrollView.image = image
             overlayView?.image = image
             
+            if self.isOverlayViewActive {
+                isOverlayViewActive = false
+                showOverlayView()
+            }
+            
             reset()
         }
     }
@@ -177,7 +182,7 @@ open class AKImageCropperView: UIView, UIScrollViewDelegate, UIGestureRecognizer
     
     /** Determines the overlay view current state. Default is false. */
     
-    open private(set) var isOverlayViewActive: Bool = false
+    open private(set) var isOverlayViewActive: Bool = true
     
     fileprivate var layoutByImage: Bool = true
     
@@ -607,6 +612,7 @@ open class AKImageCropperView: UIView, UIScrollViewDelegate, UIGestureRecognizer
      */
     
     open func reset(animationDuration duration: TimeInterval = 0, options: UIViewAnimationOptions = .curveEaseInOut, completion: ((Bool) -> Void)? = nil) {
+    
         
         guard !isAnimation else {
             return
