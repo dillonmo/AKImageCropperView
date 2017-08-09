@@ -861,28 +861,40 @@ open class AKImageCropperOverlayView: UIView {
         
         let cropRectMaxFrame = cropperView.reversedFrameWithInsets
         
+        
         if let aspectRatio = aspectRatio {
-        
-        
-            var distance = sqrt(pow(translationPoint.x, 2) + pow(translationPoint.y,2))
             
-            
-            if activeCropAreaPart.contains(.topEdge)  {
+
+                var distance = sqrt(pow(translationPoint.x, 2) + pow(translationPoint.y,2))
                 
-                if translationPoint.y > 0 {
-                    distance *= -1
+                
+                if activeCropAreaPart.contains(.topEdge)  {
+                    
+                    if translationPoint.y > 0 {
+                        distance *= -1
+                    }
+                } else if activeCropAreaPart.contains(.bottomEdge) {
+                    if translationPoint.y < 0 {
+                        distance *= -1
+                    }
                 }
-            } else if activeCropAreaPart.contains(.bottomEdge) {
-                if translationPoint.y < 0 {
-                    distance *= -1
-                }
+            
+            let newHeight = cropRect.size.height + distance
+            let newWidth = cropRect.size.width + distance * aspectRatio
+                
+                if newHeight > configuraiton.minCropRectSize.height
+                    && newHeight < cropRectMaxFrame.height
+                    && newWidth > configuraiton.minCropRectSize.width
+                    && newWidth < cropRectMaxFrame.width{
+                    
+                    cropRect.size.height = newHeight
+                    cropRect.size.width = newWidth
             }
-            
+                
 
+        
+        
 
-            
-            cropRect.size.height += distance
-            cropRect.size.width += distance * aspectRatio
 
             
         }
