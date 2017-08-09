@@ -861,8 +861,6 @@ open class AKImageCropperOverlayView: UIView {
         
         let cropRectMaxFrame = cropperView.reversedFrameWithInsets
         
-        self.aspectRatio = 1.0
-        
         if let aspectRatio = aspectRatio {
         
         
@@ -890,7 +888,6 @@ open class AKImageCropperOverlayView: UIView {
         }
             
             
-       // } else {
             if activeCropAreaPart.contains(.topEdge) {
                 
                 cropRect.origin.y += translationPoint.y
