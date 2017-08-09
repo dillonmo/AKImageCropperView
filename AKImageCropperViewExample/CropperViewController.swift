@@ -131,7 +131,7 @@ final class CropperViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        cropView.lockedAspectRatio = 1.0
+        cropView.lockedAspectRatio = 0.2
         
         navigationController?.isNavigationBarHidden = true
 

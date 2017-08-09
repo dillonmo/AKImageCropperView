@@ -34,7 +34,18 @@ open class AKImageCropperOverlayView: UIView {
 
     /** Configuration structure for the Overlay View appearance and behavior. */
     
-    internal var aspectRatio : CGFloat? = nil
+    internal var aspectRatio : CGFloat? = nil {
+        didSet {
+            if aspectRatio == oldValue {
+                return
+            }
+            
+            updateViewForAspectRatio()
+
+            
+            
+        }
+    }
 
     open var configuraiton = AKImageCropperCropViewConfiguration()
     
@@ -135,6 +146,11 @@ open class AKImageCropperOverlayView: UIView {
     open var image: UIImage! {
         didSet {
             imageView.image = image
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+                self.updateViewForAspectRatio()
+            }
+            
         }
     }
     
@@ -846,6 +862,39 @@ open class AKImageCropperOverlayView: UIView {
         activeCropAreaPart = getCropAreaPartContainsPoint(touchesBegan.touch)
     }
     
+    fileprivate func updateViewForAspectRatio() {
+        
+        if self.image == nil {
+            return
+        }
+        
+        let imageAspectRatio = self.image.size.width/self.image.size.height
+        
+        let fitScaleMultiplier = ic_CGSizeFitScaleMultiplier(image.size, relativeToSize: self.frame.size)
+        
+        if aspectRatio == nil {
+            cropRect = frame
+        } else if imageAspectRatio < aspectRatio! {  //wider than our image
+            
+            let cropHeight = self.image.size.width / aspectRatio!
+            
+            cropRect = CGRect(x:cropperView.scrollView.contentInset.left,
+                              y:((self.image.size.height-cropHeight) * fitScaleMultiplier)/2 + cropperView.scrollView.contentInset.top,
+                              width:self.image.size.width*fitScaleMultiplier,
+                              height:cropHeight*fitScaleMultiplier)
+            
+        } else  {
+            let cropWidth = self.image.size.height  * aspectRatio!
+            cropRect = CGRect(x: ((self.image.size.width-cropWidth) * fitScaleMultiplier)/2 + cropperView.scrollView.contentInset.left,
+                              y: cropperView.scrollView.contentInset.top,
+                              width: cropWidth*fitScaleMultiplier,
+                              height: self.image.size.height*fitScaleMultiplier)
+        }
+        
+        self.layoutSubviews()
+        delegate?.cropperOverlayViewDidChangeCropRect(self, cropRect)
+    }
+    
     override open func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
   
         guard let touch = touches.first else { return }
@@ -899,7 +948,7 @@ open class AKImageCropperOverlayView: UIView {
             
         }
             
-            
+        
             if activeCropAreaPart.contains(.topEdge) {
                 
                 cropRect.origin.y += translationPoint.y
