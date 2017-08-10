@@ -866,6 +866,9 @@ open class AKImageCropperOverlayView: UIView {
     }
     
     fileprivate func updateViewForAspectRatio() {
+        
+        self.cropperView.reset()
+        
         if self.image == nil || frame == CGRect.zero || aspectRatio == nil {
             return
         }
