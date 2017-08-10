@@ -162,7 +162,11 @@ open class AKImageCropperView: UIView, UIScrollViewDelegate, UIGestureRecognizer
     /** Cropperd image in the specified crop rectangle */
     
     open var croppedImage: UIImage? {
-        return image?.ic_imageInRect(scrollView.scaledVisibleRect)?.ic_rotateByAngle(angle)
+        return image?.ic_imageInRect(croppedRectangle!)?.ic_rotateByAngle(angle)
+    }
+    
+    open var croppedRectangle : CGRect? {
+        return self.overlayView?.cropRect
     }
     
     // MARK: States
