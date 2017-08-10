@@ -866,7 +866,7 @@ open class AKImageCropperOverlayView: UIView {
     }
     
     fileprivate func updateViewForAspectRatio() {
-        if self.image == nil || frame == CGRect.zero {
+        if self.image == nil || frame == CGRect.zero || aspectRatio == nil {
             return
         }
         
@@ -874,9 +874,7 @@ open class AKImageCropperOverlayView: UIView {
         
         let fitScaleMultiplier = ic_CGSizeFitScaleMultiplier(image.size, relativeToSize: self.frame.size)
         
-        if aspectRatio == nil {
-            cropRect = frame
-        } else if imageAspectRatio < aspectRatio! {  //wider than our image
+        if imageAspectRatio < aspectRatio! {  //wider than our image
             
             let cropHeight = self.image.size.width / aspectRatio!
             
