@@ -162,11 +162,17 @@ open class AKImageCropperView: UIView, UIScrollViewDelegate, UIGestureRecognizer
     /** Cropperd image in the specified crop rectangle */
     
     open var croppedImage: UIImage? {
-        return image?.ic_imageInRect(croppedRectangle!)?.ic_rotateByAngle(angle)
+        guard let croppedRectangle = croppedRectangle else {
+            return image
+        }
+        return image?.ic_imageInRect(croppedRectangle)?.ic_rotateByAngle(angle)
     }
     
     open var croppedRectangle : CGRect? {
-        return self.overlayView?.cropRect
+        guard let overlayView = overlayView else {
+            return nil
+        }
+        return self.convert(overlayView.cropRect, to: self.scrollView)
     }
     
     // MARK: States
