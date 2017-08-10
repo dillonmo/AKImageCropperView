@@ -874,25 +874,30 @@ open class AKImageCropperOverlayView: UIView {
         
         let fitScaleMultiplier = ic_CGSizeFitScaleMultiplier(image.size, relativeToSize: self.frame.size)
         
+        var width : CGFloat = 0
+        var height : CGFloat = 0
+        
         if imageAspectRatio < aspectRatio! {  //wider than our image
             
             let cropHeight = self.image.size.width / aspectRatio!
             
-            cropRect = CGRect(x:cropperView.scrollView.contentInset.left,
-                              y:((self.image.size.height-cropHeight) * fitScaleMultiplier)/2 + cropperView.scrollView.contentInset.top,
-                              width:self.image.size.width*fitScaleMultiplier,
-                              height:cropHeight*fitScaleMultiplier)
+            width = self.image.size.width * fitScaleMultiplier
+            height = cropHeight*fitScaleMultiplier
+            
             
         } else  {
             let cropWidth = self.image.size.height  * aspectRatio!
-            cropRect = CGRect(x: ((self.image.size.width-cropWidth) * fitScaleMultiplier)/2 + cropperView.scrollView.contentInset.left,
-                              y: cropperView.scrollView.contentInset.top,
-                              width: cropWidth*fitScaleMultiplier,
-                              height: self.image.size.height*fitScaleMultiplier)
+            
+            width = cropWidth*fitScaleMultiplier
+            height = self.image.size.height*fitScaleMultiplier
         }
         
+        cropRect = CGRect(x:(self.frame.size.width-width)/2,
+                          y:(self.frame.size.height-height)/2,
+                          width:width,
+                          height:height)
+        
         self.layoutSubviews()
-        delegate?.cropperOverlayViewDidChangeCropRect(self, cropRect)
     }
     
     override open func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
